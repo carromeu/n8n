@@ -1,7 +1,6 @@
-### %GENESIS_PROJECT_NAME%
-# %GENESIS_PROJECT_UNIX% / %GENESIS_APP_UNIX%
+# N8N
 
-Instancia no cluster o automatizador de fluxograma [N8N](https://n8n.io), bem como containers do [PGVector](https://github.com/pgvector/pgvector) e do [WAHA - WhatsApp API](https://waha.devlike.pro).
+Para uso local do automatizador de fluxograma [N8N](https://n8n.io), bem como containers do [PGVector](https://github.com/pgvector/pgvector) e do [WAHA - WhatsApp API](https://waha.devlike.pro).
 
 Baseado na [configuração de _deploy_ do N8N usando Docker](https://docs.n8n.io/hosting/installation/server-setups/docker-compose/).
 
@@ -9,28 +8,28 @@ Baseado na [configuração de _deploy_ do N8N usando Docker](https://docs.n8n.io
 
 > **Atenção!** No MacOS faça: `docker pull devlikeapro/waha:arm && docker tag devlikeapro/waha:arm devlikeapro/waha:latest`.
 
-Criação dos volumes:
+Preparação do ambiente:
 
 ```
-docker volume create %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_db && \
-docker volume create %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_n8n && \
-docker volume create %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_vector && \
-docker volume create %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_pgadmin && \
-docker volume create %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_waha && \
-docker volume create --driver local --opt type=none --opt device=$(pwd)/backup --opt o=bind %GENESIS_PROJECT_UNIX%_%GENESIS_APP_UNIX%_development_backup
+docker network create my_n8n_network && \
+docker volume create my_n8n_db && \
+docker volume create my_n8n_data && \
+docker volume create my_n8n_vector && \
+docker volume create my_n8n_pgadmin && \
+docker volume create my_n8n_waha && \
+docker volume create --driver local --opt type=none --opt device=$(pwd)/backup --opt o=bind my_n8n_backup
 ```
 
 Configuração das variáveis de ambiente:
 
 ```
 cp .env.example .env
-cp .env.io.example .env.io
 ```
 
 Subir a _stack_ de containers:
 
 ```
-env $(cat .env.io) docker compose up --force-recreate --build --remove-orphans --wait
+env docker compose up --force-recreate --build --remove-orphans --wait
 ```
 
 ## Referências

@@ -155,7 +155,7 @@ services:
       - stack
     command: >
       sh -c  "set -ex &&
-        export BACKUP_FILE=$$(date +'%Y_%m_%d_%H_%M_%S')_${IO_PROJECT}_${IO_APP}_${IO_STAGE}_${IO_VERSION} &&
+        export BACKUP_FILE=$$(date +'%Y_%m_%d_%H_%M_%S')-n8n &&
         mkdir -p /backup/$$BACKUP_FILE && cd /backup/$$BACKUP_FILE &&
         export PGHOST=db PGUSER=${POSTGRES_USER} PGPASSWORD=${POSTGRES_PASSWORD} &&
         pg_dump --file n8n.dump --format=p --encoding=UTF8 --no-owner --no-privileges --clean --if-exists --verbose n8n &&
@@ -189,7 +189,7 @@ services:
 networks:
   stack:
     external: true
-    name: ${IO_PROJECT}_${IO_APP}_${IO_STAGE}
+    name: ${NETWORK}
 
 volumes:
   db_storage:
@@ -213,5 +213,5 @@ volumes:
     external: true
 
   backup_storage:
-    name: ${IO_PROJECT}_${IO_APP}_${IO_STAGE}_backup
+    name: ${VOLUME_BACKUP}
     external: true
